@@ -1,6 +1,6 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 
@@ -66,6 +66,6 @@ app.post('/calculate', (req, res) => {
     res.json({ bmi, riskScore, riskCategory });
 });
 
-// Start Server
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
