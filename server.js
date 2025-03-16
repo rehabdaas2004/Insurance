@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const path = require('path');
 
 const app = express();
 
@@ -50,7 +51,7 @@ function calculateRiskScore(age, bmi, bloodPressure, familyHistory) {
     return { riskScore, riskCategory };
 }
 
-// API Route for Risk Calculation
+// ✅ API Route for Risk Calculation
 app.post('/api/calculate', (req, res) => {
     const { age, weight, height, bloodPressure, familyHistory } = req.body;
 
@@ -64,9 +65,21 @@ app.post('/api/calculate', (req, res) => {
     res.json(result);
 });
 
-// Default Route (Serve Frontend)
-const path = require('path');
+// ✅ API Test Route (Confirms API is working)
+app.get('/api/test', (req, res) => {
+    res.json({ message: "API is working!" });
+});
 
+// ✅ NEW: Modify Root Route to Show a Message
+app.get('/', (req, res) => {
+    res.send(`
+        <h1>✅ Insurance Risk API is Running</h1>
+        <p>Use <code>/api/calculate</code> to calculate risk scores.</p>
+        <p>Test the API with <code>/api/test</code>.</p>
+    `);
+});
+
+// ✅ Default Route (Still Serves Frontend)
 app.use(express.static(path.join(__dirname, 'public'))); 
 
 app.get('*', (req, res) => {
@@ -76,6 +89,3 @@ app.get('*', (req, res) => {
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-app.get('/api/test', (req, res) => {
-    res.json({ message: "API is working!" });
-});
