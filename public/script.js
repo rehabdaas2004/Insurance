@@ -1,21 +1,39 @@
 document.getElementById("riskForm").addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    const age = document.getElementById("age").value;
-    const weight = document.getElementById("weight").value;
-    const height = document.getElementById("height").value;
+    const age = parseInt(document.getElementById("age").value);
+    const weight = parseFloat(document.getElementById("weight").value);
+    let height = parseFloat(document.getElementById("height").value);
+
+    // Convert height from cm to meters
+    height = height / 100;
+
     const bloodPressure = document.getElementById("bloodPressure").value;
 
-    // Get family history
     const familyHistory = Array.from(document.querySelectorAll("input[type=checkbox]:checked"))
                                .map(input => input.value);
 
-    const response = await fetch("http://localhost:5000/calculate-risk", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ age, weight, height, bloodPressure, familyHistory })
-    });
+    try {
+        console.log("Sending request with:", { age, weight, height, bloodPressure, familyHistory });
 
-    const result = await response.json();
-    document.getElementById("result").innerText = `Risk Score: ${result.riskScore} (${result.category})`;
+        const response = await fetch("http://localhost:5000/calculate-risk", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ age, weight, height, bloodPressure, familyHistory })
+        });
+
+        console.log("Response status:", response.status);
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        console.log("Received response:", result);
+
+        document.getElementById("result").innerText = `Risk Score: ${result.riskScore} (${result.category})`;
+    } catch (error) {
+        console.error("Error occurred:", error);
+        document.getElementById("result").innerText = "Error: Could not fetch data";
+    }
 });
