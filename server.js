@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const app = express();
 
-// Middleware
+// Middleware:
 app.use(cors({
     origin: '*',  // Allows requests from anywhere (adjust if needed)
     methods: ['GET', 'POST']
