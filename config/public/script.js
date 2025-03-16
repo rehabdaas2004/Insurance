@@ -1,4 +1,4 @@
-const apiURL = "https://insuranceriskcalculator-gpdzg6epg6dad9cn.uaenorth-01.azurewebsites.net/api/calculate"; 
+const apiURL = "lesgoo-ebdhbgbfcme5cdb0.uaenorth-01.azurewebsites.net"; 
 
 document.getElementById("riskForm").addEventListener("submit", async function(event) {
     event.preventDefault();
