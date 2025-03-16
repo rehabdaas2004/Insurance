@@ -65,10 +65,17 @@ app.post('/api/calculate', (req, res) => {
 });
 
 // Default Route (Serve Frontend)
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, 'public'))); 
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.get('/api/test', (req, res) => {
+    res.json({ message: "API is working!" });
+});
